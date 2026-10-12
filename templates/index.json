@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>Describe how and when customers can return an order.</p>"
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Explain your processing time and the delivery estimates for each region.</p>"
+          }
+        }
+      },
+      "block_order": ["question-1", "question-2"],
+      "settings": {
+        "enable_structured_data": true
+      }
+    },
+    "comparison": {
+      "type": "comparison-table",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "label": "Email support",
+            "icon_1": "check",
+            "icon_2": "check",
+            "icon_3": "check"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "label": "Phone support",
+            "icon_1": "cross",
+            "icon_2": "check",
+            "icon_3": "check"
+          }
+        }
+      },
+      "block_order": ["row-1", "row-2"],
+      "settings": {}
+    },
+    "before-after": {
+      "type": "before-after-slider",
+      "settings": {}
+    }
+  },
+  "order": ["faq", "comparison", "before-after"]
+}

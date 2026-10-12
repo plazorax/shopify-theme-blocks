@@ -1,0 +1,18 @@
+{
+  "name": "shopify-theme-blocks",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Drop-in Online Store 2.0 sections for Shopify themes: FAQ accordion, comparison table, before/after slider.",
+  "license": "MIT",
+  "author": "Oleksii Shaposhnikov",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validate": "node scripts/validate-schemas.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "theme-check": "shopify theme check --fail-level suggestion",
+    "check": "npm run validate && npm test"
+  }
+}

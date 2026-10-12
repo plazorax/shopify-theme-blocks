@@ -1,0 +1,226 @@
+{%- comment -%}
+  Before/after image comparison
+  - The "after" image fills the frame; the "before" image sits on top and is
+    clipped with clip-path, driven by the --before-after-value custom property.
+  - The control is a native <input type="range">, so keyboard support
+    (arrow keys, Home/End, Page Up/Down) and touch come from the browser.
+  - assets/before-after-slider.js defines <before-after-slider>, which syncs the
+    range value to the CSS property and to aria-valuetext. Without JavaScript the
+    images render at the configured starting position and the range is hidden.
+{%- endcomment -%}
+
+{{ 'section-before-after-slider.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'before-after-slider.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign before_image = section.settings.before_image
+  assign after_image = section.settings.after_image
+  assign position = section.settings.start_position
+  assign remaining = 100 | minus: position
+
+  case section.settings.aspect_ratio
+    when 'square'
+      assign ratio = '1 / 1'
+    when 'landscape'
+      assign ratio = '4 / 3'
+    when 'portrait'
+      assign ratio = '3 / 4'
+    when 'wide'
+      assign ratio = '16 / 9'
+    else
+      if after_image != blank
+        assign ratio = after_image.aspect_ratio
+      elsif before_image != blank
+        assign ratio = before_image.aspect_ratio
+      else
+        assign ratio = '16 / 9'
+      endif
+  endcase
+
+  assign value_text_template = 'sections.before_after_slider.value_text' | t: before: '[before]', after: '[after]'
+  assign value_text = 'sections.before_after_slider.value_text' | t: before: position, after: remaining
+  assign image_sizes = '(min-width: 1200px) 1100px, calc(100vw - 2rem)'
+  assign image_widths = '375, 550, 750, 1100, 1500, 2200'
+-%}
+
+<div
+  class="before-after"
+  style="--before-after-padding-top: {{ section.settings.padding_top }}px; --before-after-padding-bottom: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="before-after__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="before-after__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <before-after-slider
+      class="before-after__frame"
+      style="--before-after-value: {{ position }}; --before-after-ratio: {{ ratio }};"
+      data-value-text="{{ value_text_template | escape }}"
+    >
+      <div class="before-after__layer before-after__layer--after">
+        {%- if after_image != blank -%}
+          {{
+            after_image
+            | image_url: width: 2200
+            | image_tag:
+              loading: 'lazy',
+              widths: image_widths,
+              sizes: image_sizes,
+              class: 'before-after__image'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'before-after__image before-after__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="before-after__layer before-after__layer--before">
+        {%- if before_image != blank -%}
+          {{
+            before_image
+            | image_url: width: 2200
+            | image_tag:
+              loading: 'lazy',
+              widths: image_widths,
+              sizes: image_sizes,
+              class: 'before-after__image'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'before-after__image before-after__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_labels -%}
+        <span class="before-after__label before-after__label--before" aria-hidden="true">
+          {{- section.settings.before_label | escape -}}
+        </span>
+        <span class="before-after__label before-after__label--after" aria-hidden="true">
+          {{- section.settings.after_label | escape -}}
+        </span>
+      {%- endif -%}
+
+      <input
+        class="before-after__input"
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        value="{{ position }}"
+        aria-label="{{ 'sections.before_after_slider.slider_label' | t | escape }}"
+        aria-valuetext="{{ value_text | escape }}"
+      >
+      <span class="before-after__handle" aria-hidden="true">
+        <span class="before-after__knob">
+          <svg width="20" height="20" viewBox="0 0 20 20" focusable="false">
+            <path d="M7 5l-4 5 4 5M13 5l4 5-4 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </span>
+    </before-after-slider>
+
+    {%- if section.settings.caption != blank -%}
+      <div class="before-after__caption">{{ section.settings.caption }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.before_after_slider.name",
+  "tag": "section",
+  "class": "section section--before-after-slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.before_after_slider.settings.heading.label",
+      "default": "See the difference"
+    },
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "t:sections.before_after_slider.settings.before_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "t:sections.before_after_slider.settings.after_image.label",
+      "info": "t:sections.before_after_slider.settings.after_image.info"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "t:sections.before_after_slider.settings.aspect_ratio.label",
+      "options": [
+        { "value": "adapt", "label": "t:sections.before_after_slider.settings.aspect_ratio.options__adapt.label" },
+        { "value": "square", "label": "t:sections.before_after_slider.settings.aspect_ratio.options__square.label" },
+        { "value": "landscape", "label": "t:sections.before_after_slider.settings.aspect_ratio.options__landscape.label" },
+        { "value": "portrait", "label": "t:sections.before_after_slider.settings.aspect_ratio.options__portrait.label" },
+        { "value": "wide", "label": "t:sections.before_after_slider.settings.aspect_ratio.options__wide.label" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "range",
+      "id": "start_position",
+      "label": "t:sections.before_after_slider.settings.start_position.label",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "checkbox",
+      "id": "show_labels",
+      "label": "t:sections.before_after_slider.settings.show_labels.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "t:sections.before_after_slider.settings.before_label.label",
+      "default": "Before"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "t:sections.before_after_slider.settings.after_label.label",
+      "default": "After"
+    },
+    {
+      "type": "richtext",
+      "id": "caption",
+      "label": "t:sections.before_after_slider.settings.caption.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.before_after_slider.settings.header_spacing.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.before_after_slider.settings.padding_top.label",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.before_after_slider.settings.padding_bottom.label",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.before_after_slider.presets.name"
+    }
+  ]
+}
+{% endschema %}

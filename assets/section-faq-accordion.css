@@ -1,0 +1,101 @@
+/* FAQ accordion: native <details>/<summary>, no JavaScript. */
+
+.faq-accordion {
+  --faq-border: rgb(0 0 0 / 0.15);
+  --faq-gap: 1rem;
+  --faq-duration: 250ms;
+
+  padding-block: var(--faq-padding-top, 40px) var(--faq-padding-bottom, 40px);
+}
+
+.faq-accordion__inner {
+  max-width: 48rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.faq-accordion__heading {
+  margin-block: 0 var(--faq-gap);
+}
+
+.faq-accordion__intro {
+  margin-block-end: calc(var(--faq-gap) * 1.5);
+}
+
+.faq-accordion__list {
+  border-block-start: 1px solid var(--faq-border);
+}
+
+.faq-accordion__item {
+  border-block-end: 1px solid var(--faq-border);
+}
+
+.faq-accordion__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--faq-gap);
+  padding-block: var(--faq-gap);
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+
+/* Hide the default disclosure triangle (WebKit still needs the pseudo-element). */
+.faq-accordion__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-accordion__question:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.faq-accordion__icon {
+  flex-shrink: 0;
+}
+
+.faq-accordion__item[open] .faq-accordion__icon {
+  transform: rotate(180deg);
+}
+
+.faq-accordion__answer {
+  padding-block-end: var(--faq-gap);
+}
+
+.faq-accordion__answer > :first-child {
+  margin-block-start: 0;
+}
+
+.faq-accordion__answer > :last-child {
+  margin-block-end: 0;
+}
+
+/*
+  Progressive enhancement: browsers that support ::details-content and
+  interpolate-size animate the panel height. Others open and close instantly.
+  Users who ask for reduced motion never get the animation.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .faq-accordion__icon {
+    transition: transform var(--faq-duration) ease;
+  }
+
+  @supports (interpolate-size: allow-keywords) and selector(::details-content) {
+    .faq-accordion {
+      interpolate-size: allow-keywords;
+    }
+
+    .faq-accordion__item::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size var(--faq-duration) ease,
+        content-visibility var(--faq-duration) allow-discrete;
+    }
+
+    .faq-accordion__item[open]::details-content {
+      block-size: auto;
+    }
+  }
+}

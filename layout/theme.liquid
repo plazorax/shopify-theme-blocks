@@ -1,0 +1,19 @@
+{%- comment -%}
+  Development scaffold only. This repository is a set of sections, not a full
+  theme; this layout exists so `shopify theme check` can treat the folder as a
+  theme. Do not copy it into your theme.
+{%- endcomment -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }}</title>
+    {{ content_for_header }}
+  </head>
+  <body>
+    <main id="MainContent">
+      {{ content_for_layout }}
+    </main>
+  </body>
+</html>

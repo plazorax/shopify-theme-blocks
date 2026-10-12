@@ -1,0 +1,116 @@
+{
+  "sections": {
+    "faq_accordion": {
+      "name": "FAQ accordion",
+      "settings": {
+        "heading": { "label": "Heading" },
+        "intro": { "label": "Introduction" },
+        "open_first": { "label": "Open the first question by default" },
+        "single_open": {
+          "label": "Allow only one open question at a time",
+          "info": "Uses the native name attribute on details elements. Browsers without support let several questions stay open."
+        },
+        "header_seo": { "content": "Search engines" },
+        "enable_structured_data": {
+          "label": "Output FAQPage structured data",
+          "info": "Adds schema.org FAQPage JSON-LD built from the questions below. Use it only for questions written by you, not by customers, and only once per page."
+        },
+        "header_spacing": { "content": "Section spacing" },
+        "padding_top": { "label": "Top padding" },
+        "padding_bottom": { "label": "Bottom padding" }
+      },
+      "blocks": {
+        "question": {
+          "name": "Question",
+          "settings": {
+            "question": { "label": "Question" },
+            "answer": { "label": "Answer" }
+          }
+        }
+      },
+      "presets": { "name": "FAQ accordion" }
+    },
+    "comparison_table": {
+      "name": "Comparison table",
+      "settings": {
+        "heading": { "label": "Heading" },
+        "header_columns": {
+          "content": "Columns",
+          "info": "Leave a column heading empty to hide that column."
+        },
+        "column_1_heading": { "label": "Column 1 heading" },
+        "column_2_heading": { "label": "Column 2 heading" },
+        "column_3_heading": { "label": "Column 3 heading" },
+        "column_4_heading": { "label": "Column 4 heading" },
+        "highlight_column": {
+          "label": "Highlighted column",
+          "options__0": { "label": "None" },
+          "options__1": { "label": "Column 1" },
+          "options__2": { "label": "Column 2" },
+          "options__3": { "label": "Column 3" },
+          "options__4": { "label": "Column 4" }
+        },
+        "highlight_label": { "label": "Highlighted column badge" },
+        "header_colors": { "content": "Colors" },
+        "background_color": {
+          "label": "Background",
+          "info": "Also used behind the pinned feature column while the table scrolls."
+        },
+        "text_color": { "label": "Text" },
+        "accent_color": { "label": "Highlighted column background" },
+        "header_spacing": { "content": "Section spacing" },
+        "padding_top": { "label": "Top padding" },
+        "padding_bottom": { "label": "Bottom padding" }
+      },
+      "blocks": {
+        "row": {
+          "name": "Row",
+          "settings": {
+            "label": { "label": "Feature" },
+            "description": { "label": "Feature description" },
+            "header_column_1": { "content": "Column 1" },
+            "header_column_2": { "content": "Column 2" },
+            "header_column_3": { "content": "Column 3" },
+            "header_column_4": { "content": "Column 4" },
+            "icon": {
+              "label": "Icon",
+              "options__none": { "label": "None" },
+              "options__check": { "label": "Check (included)" },
+              "options__cross": { "label": "Cross (not included)" }
+            },
+            "text": { "label": "Text" }
+          }
+        }
+      },
+      "presets": { "name": "Comparison table" }
+    },
+    "before_after_slider": {
+      "name": "Before/after slider",
+      "settings": {
+        "heading": { "label": "Heading" },
+        "before_image": { "label": "Before image" },
+        "after_image": {
+          "label": "After image",
+          "info": "Use two images with the same dimensions and framing for the best result."
+        },
+        "aspect_ratio": {
+          "label": "Aspect ratio",
+          "options__adapt": { "label": "Adapt to image" },
+          "options__square": { "label": "Square (1:1)" },
+          "options__landscape": { "label": "Landscape (4:3)" },
+          "options__portrait": { "label": "Portrait (3:4)" },
+          "options__wide": { "label": "Wide (16:9)" }
+        },
+        "start_position": { "label": "Starting position" },
+        "show_labels": { "label": "Show labels" },
+        "before_label": { "label": "Before label" },
+        "after_label": { "label": "After label" },
+        "caption": { "label": "Caption" },
+        "header_spacing": { "content": "Section spacing" },
+        "padding_top": { "label": "Top padding" },
+        "padding_bottom": { "label": "Bottom padding" }
+      },
+      "presets": { "name": "Before/after slider" }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# Theme Check configuration.
+# Docs: https://shopify.dev/docs/storefronts/themes/tools/theme-check/configuration
+extends: theme-check:recommended
+ignore:
+  - node_modules/**
+  - scripts/**
+  - test/**

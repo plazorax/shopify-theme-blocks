@@ -1,0 +1,41 @@
+{%- doc -%}
+  Renders the content of one comparison-table cell.
+  The SVG icons are decorative (aria-hidden); the meaning is carried by
+  visually hidden text so screen readers announce "Included" / "Not included".
+
+  @param {string} icon - "check", "cross" or "none"
+  @param {string} [text] - Optional visible text shown next to the icon
+
+  @example
+  {% render 'comparison-table-value', icon: 'check', text: 'Up to 5 users' %}
+{%- enddoc -%}
+
+{%- case icon -%}
+  {%- when 'check' -%}
+    <svg
+      class="comparison-table__icon comparison-table__icon--check"
+      aria-hidden="true"
+      focusable="false"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+    >
+      <path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="comparison-table__visually-hidden">{{ 'sections.comparison_table.included' | t }}</span>
+  {%- when 'cross' -%}
+    <svg
+      class="comparison-table__icon comparison-table__icon--cross"
+      aria-hidden="true"
+      focusable="false"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+    >
+      <path d="M5 5l10 10M15 5L5 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="comparison-table__visually-hidden">{{ 'sections.comparison_table.not_included' | t }}</span>
+{%- endcase -%}
+{%- if text != blank -%}
+  <span class="comparison-table__text">{{ text | escape }}</span>
+{%- endif -%}

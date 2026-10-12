@@ -1,0 +1,174 @@
+/* Before/after image comparison. Position is driven by --before-after-value (0-100). */
+
+.before-after {
+  padding-block: var(--before-after-padding-top, 40px) var(--before-after-padding-bottom, 40px);
+}
+
+.before-after__inner {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.before-after__heading {
+  margin-block: 0 1.5rem;
+}
+
+.before-after__frame {
+  --before-after-handle-color: #ffffff;
+  --before-after-handle-contrast: #1a1a1a;
+  /* Width of the (invisible) range thumb and of the visible knob: a 44px touch target. */
+  --before-after-thumb: 2.75rem;
+  /*
+    Horizontal centre of the range thumb. Browsers keep the whole thumb inside
+    the track, so value 0 puts its centre half a thumb from the left edge. The
+    divider follows the same formula, so it always sits under the pointer.
+  */
+  --before-after-x: calc(
+    var(--before-after-thumb) / 2 + (100% - var(--before-after-thumb)) * var(--before-after-value, 50) / 100
+  );
+
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: var(--before-after-ratio, 16 / 9);
+  /* The clip-path and the range input both run left to right, even in RTL themes. */
+  direction: ltr;
+  user-select: none;
+}
+
+.before-after__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.before-after__layer--before {
+  clip-path: inset(0 calc(100% - var(--before-after-x)) 0 0);
+}
+
+.before-after__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.before-after__placeholder {
+  background: rgb(0 0 0 / 0.06);
+}
+
+.before-after__layer--after .before-after__placeholder {
+  background: rgb(0 0 0 / 0.12);
+}
+
+.before-after__label {
+  position: absolute;
+  inset-block-start: 0.75rem;
+  z-index: 1;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.6);
+  color: #ffffff;
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+
+.before-after__label--before {
+  left: 0.75rem;
+}
+
+.before-after__label--after {
+  right: 0.75rem;
+}
+
+.before-after__handle {
+  position: absolute;
+  inset-block: 0;
+  left: var(--before-after-x);
+  z-index: 2;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--before-after-handle-color);
+  pointer-events: none;
+}
+
+.before-after__knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: var(--before-after-thumb);
+  height: var(--before-after-thumb);
+  border-radius: 50%;
+  background: var(--before-after-handle-color);
+  color: var(--before-after-handle-contrast);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.3);
+  transform: translate(-50%, -50%);
+}
+
+/*
+  The range input covers the whole frame so a press or drag anywhere moves the
+  divider. It is transparent; the visible handle above mirrors its value.
+  The thumb is as wide as the knob and as tall as the frame: some touch
+  browsers (notably iOS Safari) only move a range input when the thumb itself
+  is dragged, so a thin thumb would be almost impossible to grab.
+  touch-action: pan-y keeps vertical page scrolling working on touch screens.
+*/
+.before-after__input {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  appearance: none;
+  background: transparent;
+}
+
+.before-after__input::-webkit-slider-runnable-track {
+  height: 100%;
+}
+
+.before-after__input::-webkit-slider-thumb {
+  width: var(--before-after-thumb);
+  height: 100%;
+  appearance: none;
+}
+
+.before-after__input::-moz-range-track {
+  height: 100%;
+}
+
+.before-after__input::-moz-range-thumb {
+  width: var(--before-after-thumb);
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.before-after__input:focus-visible + .before-after__handle .before-after__knob {
+  outline: 3px solid var(--before-after-handle-contrast);
+  outline-offset: 2px;
+}
+
+/* Until the custom element is defined (or if JavaScript is off), show a static split. */
+before-after-slider:not(:defined) .before-after__input,
+before-after-slider:not(:defined) .before-after__handle {
+  display: none;
+}
+
+.before-after__caption {
+  margin-block-start: 1rem;
+}
+
+@media (forced-colors: active) {
+  .before-after__handle,
+  .before-after__knob {
+    background: CanvasText;
+    color: Canvas;
+  }
+}

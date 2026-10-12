@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Schema validator and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Validate section schemas and locales
+        run: npm run validate
+      - name: Run unit tests
+        run: npm test
+
+  theme-check:
+    name: Shopify Theme Check
+    runs-on: ubuntu-latest
+    env:
+      SHOPIFY_CLI_NO_ANALYTICS: '1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install Shopify CLI
+        run: npm install --global @shopify/cli@4.9.3
+      - name: Run theme check
+        run: shopify theme check --path . --fail-level suggestion

@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "comparison_table": {
+      "region_label": "Comparison table",
+      "feature": "Feature",
+      "included": "Included",
+      "not_included": "Not included"
+    },
+    "before_after_slider": {
+      "slider_label": "Before and after comparison",
+      "value_text": "{{ before }}% before, {{ after }}% after"
+    }
+  }
+}
