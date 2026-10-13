@@ -1,4 +1,4 @@
-# shopify-theme-blocks
+# Shopify Theme Blocks
 
 ![CI](https://github.com/plazorax/shopify-theme-blocks/actions/workflows/ci.yml/badge.svg)
 
